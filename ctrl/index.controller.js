@@ -30,8 +30,12 @@ const createRep = (req, res, next) => __awaiter(void 0, void 0, void 0, function
 });
 const createNetOp = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { clientName } = yield index_model_1.default.create(req.body);
-        console.log(req.body);
+        const newNetCase = yield index_model_1.default.create(req.body);
+        const { clientName, repName, _id } = newNetCase;
+        const rep = yield rep_model_1.default.findById(repName);
+        const idupdate = yield (rep === null || rep === void 0 ? void 0 : rep.cases.push(_id));
+        rep === null || rep === void 0 ? void 0 : rep.save();
+        console.log(rep === null || rep === void 0 ? void 0 : rep.cases, rep);
         return res.status(http_status_codes_1.StatusCodes.OK).send(`successfully added ${clientName}`);
     }
     catch (error) {

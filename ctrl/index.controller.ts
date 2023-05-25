@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
+import mongoose from "mongoose";
 import netModel from "../model/index.model";
 import repModel from "../model/rep.model";
 
@@ -17,8 +18,15 @@ const createRep: RequestHandler = async (req, res, next) => {
 
 const createNetOp: RequestHandler = async (req, res, next) => {
   try {
-    const { clientName } = await netModel.create(req.body);
-    console.log(req.body);
+    const newNetCase = await netModel.create(req.body);
+    const { clientName, repName, _id } = newNetCase;
+    const rep = await repModel.findById(repName);
+    const idupdate = await rep?.cases.push(_id);
+
+    rep?.save();
+
+    console.log(rep?.cases, rep);
+
     return res.status(StatusCodes.OK).send(`successfully added ${clientName}`);
   } catch (error) {
     console.log(error);
