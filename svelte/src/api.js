@@ -1,9 +1,13 @@
 /** @type {import('./$types').PageLoad} */
 export const load = async () => {
-    const response = await fetch('http://localhost:3000/net');
-    const data = await response.json();
-    return {
-        snippets: data
-    };
+    try {
+        const response = await fetch('http://localhost:3000/net');
+        const { netOptions } = await response.json();
+        return netOptions;
+    }
+    catch (error) {
+        console.log('something went wrong');
+        console.log(error);
+    }
+    return null;
 };
-//# sourceMappingURL=api.js.map

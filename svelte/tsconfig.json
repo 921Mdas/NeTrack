@@ -1,18 +1,21 @@
 {
 	"compilerOptions": {
 		"target": "es2017",
-		"module": "esnext",
+		"module": "es2020",
 		"strict": true,
 		"jsx": "preserve",
-		"importHelpers": true,
-		"moduleResolution": "node",
+		"moduleResolution": "node", // Update this line
 		"resolveJsonModule": true,
-		"noEmit": true,
+		"useDefineForClassFields": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["src/*"]
+			"src/*": ["src/*"],
+			"$lib/*": ["src/lib/*"]
 		}
 	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.js", "src/**/*.svelte"],
-	"exclude": ["node_modules", ".svelte-kit", "dist"]
+	"exclude": ["node_modules/*", ".svelte-kit/*", ".svelte-kit"],
+	"include": ["src/**/*.svelte", "src/**/*.ts"]
 }

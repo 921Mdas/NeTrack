@@ -1,16 +1,14 @@
 /** @type {import('./$types').PageLoad} */
-import type { PageLoad } from './$types';
 
-export const load: PageLoad = async () => {
+export const load = async () => {
 	try {
 		const response = await fetch('http://localhost:3000/net');
-		const data = await response.json();
-		console.log('data', response);
-		return {
-			snippets: data
-		};
+		const { netOptions }: { netOptions: App.NetCase[] } = await response.json();
+		return netOptions;
 	} catch (error) {
 		console.log('something went wrong');
 		console.log(error);
 	}
+
+	return null;
 };
