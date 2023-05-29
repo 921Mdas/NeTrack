@@ -12,3 +12,26 @@ export const load = async () => {
 
 	return null;
 };
+
+export const getReps = async () => {
+	try {
+		const response = await fetch('http://localhost:3000/rep');
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.log('something went wrong');
+		console.log(error);
+	}
+};
+
+export const addNetCasesToStore = async (input: App.NetCase) => {
+	await fetch('http://localhost:3000/net', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			input
+		})
+	});
+};

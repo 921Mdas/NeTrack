@@ -1,10 +1,9 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-import mongoose from "mongoose";
-import netModel from "../model/index.model";
-import repModel from "../model/rep.model";
+import netModel from "../model/index.model.js";
+import repModel from "../model/rep.model.js";
 
-const createRep: RequestHandler = async (req, res, next) => {
+const createRep: RequestHandler = async (req, res) => {
   try {
     const newRep = await repModel.create(req.body);
     return res
@@ -16,16 +15,44 @@ const createRep: RequestHandler = async (req, res, next) => {
   }
 };
 
-const createNetOp: RequestHandler = async (req, res, next) => {
+const createNetOp: RequestHandler = async (req, res) => {
   try {
-    const newNetCase = await netModel.create(req.body);
+    console.log("reqbody", req.body.input);
+
+    const {
+      input: {
+        ClientName,
+        Rep,
+        ARR,
+        Notes,
+        Category,
+        QC,
+        Value,
+        DM,
+        Budget,
+        Timeline,
+        isProspected,
+      },
+    } = req.body;
+
+    const newNetCase = await netModel.create({
+      clientName: ClientName,
+      repName: Rep,
+      Arr: ARR,
+      Notes: Notes,
+      Category: Category,
+      qcPoints: QC,
+      Value: Value,
+      DM: DM,
+      Budget: Budget,
+      Timeline: Timeline,
+      Prospected: isProspected,
+    });
     const { clientName, repName, _id } = newNetCase;
     const rep = await repModel.findById(repName);
-    const idupdate = await rep?.cases.push(_id);
+    await rep?.cases.push(_id);
 
     rep?.save();
-
-    console.log(rep?.cases, rep);
 
     return res.status(StatusCodes.OK).send(`successfully added ${clientName}`);
   } catch (error) {
@@ -34,7 +61,17 @@ const createNetOp: RequestHandler = async (req, res, next) => {
   }
 };
 
-const getAllNetOps: RequestHandler = async (req, res, next) => {
+const getAllReps: RequestHandler = async (_req, res) => {
+  try {
+    const reps = await repModel.find({}).populate("cases");
+    return res.status(StatusCodes.OK).json({ message: "all reps", reps });
+  } catch (error) {
+    console.log(error);
+    return res.status(StatusCodes.NOT_FOUND).send("couldn't return reps");
+  }
+};
+
+const getAllNetOps: RequestHandler = async (_req, res) => {
   const netOptions = await netModel.find({}).populate("repName");
   try {
     return res
@@ -46,4 +83,4 @@ const getAllNetOps: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { getAllNetOps, createNetOp, createRep };
+export default { getAllNetOps, createNetOp, createRep, getAllReps };
