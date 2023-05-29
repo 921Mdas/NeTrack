@@ -1,14 +1,16 @@
 import express from "express";
-import { json } from "body-parser";
-import mainRouter from "./routes";
-const cors = require("cors");
+import bodyParser from "body-parser";
+import mainRouter from "./routes/index.js";
+import cors from "cors";
+import { config } from "dotenv";
+
 const app = express();
 const port = 3000;
 
-require("dotenv").config();
-require("./config.db");
+config();
+import "./config.db.js"; // Import the config.db.js file
 
-app.use(json());
+app.use(bodyParser.json());
 app.use(
   cors({
     credentials: true,

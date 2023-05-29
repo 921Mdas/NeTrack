@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
-require("dotenv").config();
+import { config } from "dotenv";
+
+config();
 
 mongoose.connect(process.env.DATABASE_URL);
 

@@ -3,7 +3,7 @@
 // and what to do when importing types
 declare namespace App {
 	interface NetCase {
-		ClientName: string;
+		clientName: string;
 		Rep: string;
 		Value: boolean;
 		Budget: boolean;
@@ -13,7 +13,7 @@ declare namespace App {
 		Notes: string;
 		QC: number;
 		Category: 'Feeling Lucky' | 'Medium' | 'Hot';
-		Stage: (num: number) => 'Feeling Lucky' | 'Medium' | 'Hot';
+		isProspected: boolean;
 	}
 
 	interface NetStoreType {
@@ -21,5 +21,13 @@ declare namespace App {
 		allHotCases: NetCase[] | null;
 		allMediumCases: NetCase[] | null;
 		allFeelingLuckies: NetCase[] | null;
+		reps: Rep[] | null;
+	}
+
+	interface Rep {
+		name: string;
+		office: string;
+		cases: NetCase[];
+		_id: string;
 	}
 }

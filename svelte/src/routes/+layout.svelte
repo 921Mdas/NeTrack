@@ -5,6 +5,15 @@
 	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
+	import {AppBar, AppShell} from '@skeletonlabs/skeleton'
 </script>
 
-<slot />
+<AppShell>
+	<svelte:fragment slot='header'>
+		<AppBar class='font-bold h5'>
+	         CS TORONTO
+		</AppBar>
+	</svelte:fragment>
+	<slot />
+</AppShell>
+
