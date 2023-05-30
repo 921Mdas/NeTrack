@@ -35,3 +35,12 @@ export const addNetCasesToStore = async (input: App.NetCase) => {
 		})
 	});
 };
+
+export const deleteNetCase = async (id: string) => {
+	await fetch(`http://localhost:3000/deletenet/${id}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	});
+};

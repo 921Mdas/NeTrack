@@ -1,8 +1,13 @@
 <script lang='ts'>
   export let net: App.NetCase;
+  import { deleteNetCase } from "../api";
   let categoryColor: string;
 
-  let { Arr, repName, clientName, Value, Budget, DM, Timeline, Category, Prospected } = net;
+
+
+  let { Arr, repName, clientName, Value, Budget, DM, Timeline, Category, Prospected, _id } = net;
+
+
 
 </script>
 
@@ -34,7 +39,9 @@
         <td class="ml-2 border-2 px-3">
           <div class="actions flex gap-2">
             <button
-              class="rounded-sm bg-red-900 w-5 h-6 flex justify-center items-center p-0">d</button>
+              class="rounded-sm bg-red-900 w-5 h-6 flex justify-center items-center p-0" on:click={()=>{
+                deleteNetCase(_id)
+              }}>d</button>
             <button
               class="rounded-sm bg-blue-500 w-5 h-6 flex justify-center items-center p-0"
               on:click={() => {
