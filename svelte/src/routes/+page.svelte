@@ -5,6 +5,7 @@
   import { netStore } from '../store';
   import Form from "../components/Form.svelte";
   import Case from "../components/Case.svelte";
+  import Dashboard from "../components/Dashboard.svelte";
 
   export let data: App.NetCase[] | null;
   let TorontoNetCases: App.NetCase[] | null = [];
@@ -24,7 +25,7 @@
     }));
 
     if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('netCases', JSON.stringify(TorontoNetCases));
+      localStorage.setItem('allNetCases', JSON.stringify(TorontoNetCases));
     }
   });
 
@@ -49,7 +50,9 @@
     <div class="test p-2 bg-slate-800 rounded-md">
       <Form />
     </div>
-    <div class="test p-2 bg-slate-800 rounded-md col-span-2">Dashboard</div>
+    <div class="test p-2 bg-slate-800 rounded-md col-span-2">
+		<Dashboard /> 
+	</div>
     <div class="test p-2 bg-slate-800 rounded-md">
       <h3 class="p2 font-bold">Hot 🔥</h3>
       {#if TorontoNetCases}

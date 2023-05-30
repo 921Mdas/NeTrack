@@ -33,3 +33,11 @@ export const addNetCasesToStore = async (input) => {
         })
     });
 };
+export const deleteNetCase = async (id) => {
+    await fetch(`http://localhost:3000/deletenet/${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+};

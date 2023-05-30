@@ -52,6 +52,20 @@ const getAllReps = async (_req, res) => {
         return res.status(StatusCodes.NOT_FOUND).send("couldn't return reps");
     }
 };
+const deleteNet = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const deletedNet = await netModel.deleteOne({ _id: id });
+        console.log("todelete", deletedNet);
+        return res
+            .status(StatusCodes.OK)
+            .json({ "💥 successfully deleted": deletedNet });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(StatusCodes.NOT_FOUND).send("couldn't delete net option");
+    }
+};
 const getAllNetOps = async (_req, res) => {
     const netOptions = await netModel.find({}).populate("repName");
     try {
@@ -64,4 +78,4 @@ const getAllNetOps = async (_req, res) => {
         return res.status(StatusCodes.NOT_FOUND).send("couldn't find any net op");
     }
 };
-export default { getAllNetOps, createNetOp, createRep, getAllReps };
+export default { getAllNetOps, createNetOp, createRep, getAllReps, deleteNet };
