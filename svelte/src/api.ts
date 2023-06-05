@@ -1,9 +1,10 @@
 /** @type {import('./$types').PageLoad} */
+import { updateNetStore } from './store';
 
 export const load = async () => {
 	try {
 		const response = await fetch('http://localhost:3000/net');
-		const { netOptions }: { netOptions: App.NetCase[] } = await response.json();
+		const { netOptions }: { netOptions: App.NetType[] } = await response.json();
 		return netOptions;
 	} catch (error) {
 		console.log('something went wrong');
@@ -24,7 +25,8 @@ export const getReps = async () => {
 	}
 };
 
-export const addNetCasesToStore = async (input: App.NetCase) => {
+export const addNetCasesToStore = async (input: App.NetType) => {
+	console.log('the hell', input);
 	await fetch('http://localhost:3000/net', {
 		method: 'POST',
 		headers: {
@@ -34,6 +36,8 @@ export const addNetCasesToStore = async (input: App.NetCase) => {
 			input
 		})
 	});
+
+	updateNetStore();
 };
 
 export const deleteNetCase = async (id: string) => {
@@ -43,4 +47,6 @@ export const deleteNetCase = async (id: string) => {
 			'Content-Type': 'application/json'
 		}
 	});
+
+	updateNetStore();
 };

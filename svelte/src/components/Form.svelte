@@ -1,111 +1,72 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { getReps, addNetCasesToStore } from '../api';
-  import { netStore } from '../store';
+  import {  addNetCasesToStore, getReps } from '../api';
+  import { repStore, updateRepStore, updateGraphStore, graphStore } from '../store';
+  import {Counter, calcQualifyingStage} from "../util/helper";
 
-  const calcQualifyingStage = (input:number)=>{
-    switch (input) {
-        case 0:
-        case 1:
-            return 'Feeling Lucky';
-        case 2:
-        case 3:
-            return 'Medium';
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-            return 'Hot';
-        default:
-            return 'Feeling Lucky';
-    }
-  }
-
-  let formData: App.NetCase = {
-    ClientName: '',
-    Rep: '',
-    Value: false,
-    DM: false,
-    Budget: false,
-    Timeline: false,
-    ARR: 2320,
-    Notes: 'No notes',
-    QC: 0,
-    Category: 'Feeling Lucky',
-    isProspected:false
+   
+  let formData: App.NetType = {
+        Arr: 0,
+        DM: false,
+        Value: false,
+        Budget: false,
+        Timeline: false,
+        Prospected: false,
+        Category: 'Feeling Lucky',
+        Notes: '',
+        clientName: '',
+        Rep: '',
+        qcPoints: 0,
   };
 
-  let CSTORONTO: App.Rep[] | null = null;
+
+  const resetForm = () => {
+		formData = {
+        Arr: 0,
+        DM: false,
+        Value: false,
+        Budget: false,
+        Timeline: false,
+        Prospected: false,
+        Category: 'Feeling Lucky',
+        Notes: '',
+        clientName: '',
+        Rep: '',
+        qcPoints: 0,
+		};
+
+    calcQualifyingStage(0)
+	};
+  
+
+  
+
 
   onMount(async () => {
-    const repsData = await getReps();
-    if (repsData) {
-      const { reps }: { reps: App.Rep[] } = repsData;
-      CSTORONTO = reps;
-      netStore.update((store) => ({
-        ...store,
-        reps: reps,
-      }));
-    }
+     updateRepStore()
   });
 
   const handleSubmit = async () => {
-      try {
-     formData.Category = await calcQualifyingStage(formData.QC);
-      addNetCasesToStore(formData);
-      resetForm()
-    } catch (error) {
-      console.log('Something went wrong');
-      console.log(error);
-    }
-  };
-
- const Counter = (condition: boolean) => {
-		if (formData.QC < 4 && condition) {
-			formData.QC += 1;
-		}
-		if (formData.QC > 0 && !condition) {
-			formData.QC -= 1;
-		}
-		if (formData.QC > 4) {
-			formData.QC = 4;
-		}
-		if (formData.QC < 0) {
-			formData.QC = 0;
-		}
-
-};
+        try {
+        formData.Category = await calcQualifyingStage(formData.qcPoints);
+        await addNetCasesToStore(formData);
+        await updateGraphStore()
+        resetForm()
+      } catch (error) {
+        console.log('Something went wrong');
+        console.log(error);
+      }
+    };
 
 
-const resetForm = () => {
-		formData = {
-			ClientName: '',
-			Rep: '',
-			Value: false,
-			DM: false,
-			Budget: false,
-			Timeline: false,
-			ARR: 0,
-			Notes: '',
-			QC: 0,
-			Category: 'Feeling Lucky',
-      isProspected:false
-		};
-
-        calcQualifyingStage(0)
-	};
-  
 </script>
-
 
 <div class="flex flex-col gap-3">
     <h1 class="h5 font-bold">✚ 🤑 ADD NET CASE</h1>
     <label for="client" class="label bg-slate-800 ">
         <span class="font-bold text-xs text-blue-400">CLIENT</span>
         <input class="input rounded-sm  my-2" id="client" name='client' type="text" placeholder="Enter Client's Name" 
-			bind:value={formData.ClientName}
+		    	bind:value={formData.clientName}
         />
     </label>
     <label for="rep bg-slate-800">
@@ -114,11 +75,11 @@ const resetForm = () => {
 
         bind:value={formData.Rep}
         >
-          {#if CSTORONTO}
-        {#each CSTORONTO as rep (rep._id)}
-          <option value={rep._id}>{rep.name}</option>
-        {/each}
-      {/if}
+          {#if $repStore}
+            {#each $repStore as rep (rep._id)}
+              <option value={rep._id}>{rep.name}</option>
+            {/each}
+          {/if}
 
         </select>   
 
@@ -132,7 +93,7 @@ const resetForm = () => {
 			       checked={formData.Value}   
                    on:change={() => {
                        formData.Value = !formData.Value;
-					   Counter(formData.Value);
+					   Counter(formData,formData.Value);
                    }}  
                     />
                     <p>Value</p>
@@ -142,7 +103,7 @@ const resetForm = () => {
 			        checked={formData.DM}     
                      on:change={() => {
                         formData.DM = !formData.DM;
-					    Counter(formData.DM);
+					    Counter(formData,formData.DM);
                      }}
                     />
                     <p>DM</p>
@@ -152,7 +113,7 @@ const resetForm = () => {
 			         checked={formData.Budget}
                      on:change={() => {
                          formData.Budget = !formData.Budget;
-					     Counter(formData.Budget);
+					     Counter(formData,formData.Budget);
                      }}
                     />
                     <p>Budget</p>
@@ -162,7 +123,7 @@ const resetForm = () => {
 			        checked={formData.Timeline}
                     on:change={() => {
                         formData.Timeline = !formData.Timeline;
-					    Counter(formData.Timeline);
+					    Counter(formData,formData.Timeline);
                     }}
                     />
                     <p>Timeline</p>
@@ -173,7 +134,7 @@ const resetForm = () => {
      <label for="arr" class="label bg-slate-800">
         <span class="font-bold text-xs text-blue-400">ARR</span>
         <input class="input rounded-sm  my-2" id="arr" name='arr' type="number" placeholder="Enter Arr's Amount"
-			bind:value={formData.ARR}
+			bind:value={formData.Arr}
         
         />
     </label>
@@ -187,9 +148,9 @@ const resetForm = () => {
 
      <label class="flex items-center space-x-2">
             <input class="checkbox" type="checkbox"  
-			      checked={formData.isProspected}   
+			      checked={formData.Prospected}   
                    on:change={() => {
-                       formData.isProspected = !formData.isProspected;
+                       formData.Prospected = !formData.Prospected;
                    }}  
                     />
             <span class="font-bold text-xs text-blue-400">PROSPECTED ?</span>
