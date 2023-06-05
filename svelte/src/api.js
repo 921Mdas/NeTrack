@@ -1,4 +1,5 @@
 /** @type {import('./$types').PageLoad} */
+import { updateNetStore } from './store';
 export const load = async () => {
     try {
         const response = await fetch('http://localhost:3000/net');
@@ -23,6 +24,7 @@ export const getReps = async () => {
     }
 };
 export const addNetCasesToStore = async (input) => {
+    console.log('the hell', input);
     await fetch('http://localhost:3000/net', {
         method: 'POST',
         headers: {
@@ -32,6 +34,7 @@ export const addNetCasesToStore = async (input) => {
             input
         })
     });
+    updateNetStore();
 };
 export const deleteNetCase = async (id) => {
     await fetch(`http://localhost:3000/deletenet/${id}`, {
@@ -40,4 +43,5 @@ export const deleteNetCase = async (id) => {
             'Content-Type': 'application/json'
         }
     });
+    updateNetStore();
 };

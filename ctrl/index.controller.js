@@ -16,26 +16,26 @@ const createRep = async (req, res) => {
 };
 const createNetOp = async (req, res) => {
     try {
-        console.log("reqbody", req.body.input);
-        const { input: { ClientName, Rep, ARR, Notes, Category, QC, Value, DM, Budget, Timeline, isProspected, }, } = req.body;
+        const { input: { Arr, Budget, Category, DM, Notes, Prospected, clientName, Rep, qcPoints, Value, Timeline, }, } = req.body;
         const newNetCase = await netModel.create({
-            clientName: ClientName,
+            Arr,
+            Budget,
+            Category,
+            DM,
+            Notes,
+            Prospected,
+            clientName,
             repName: Rep,
-            Arr: ARR,
-            Notes: Notes,
-            Category: Category,
-            qcPoints: QC,
-            Value: Value,
-            DM: DM,
-            Budget: Budget,
-            Timeline: Timeline,
-            Prospected: isProspected,
+            qcPoints,
+            Value,
+            Timeline,
         });
-        const { clientName, repName, _id } = newNetCase;
+        console.log("new net op", newNetCase);
+        const { clientName: client, repName, _id } = newNetCase;
         const rep = await repModel.findById(repName);
         await (rep === null || rep === void 0 ? void 0 : rep.cases.push(_id));
         rep === null || rep === void 0 ? void 0 : rep.save();
-        return res.status(StatusCodes.OK).send(`successfully added ${clientName}`);
+        return res.status(StatusCodes.OK).send(`successfully added ${client}`);
     }
     catch (error) {
         console.log(error);

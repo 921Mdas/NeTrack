@@ -1,10 +1,9 @@
-<script>
+<!-- <script>
     export let ARR;
     export let hotCasesMRR;
     export let mediumCasesMRR;
     export let luckyCasesMRR;
 
-    console.log('xx', luckyCasesMRR)
 
     const calcMRR =(arr)=>{
     return arr.reduce((mrr,cur)=>{
@@ -34,4 +33,4 @@
 
     
 
-</div>
+</div> -->

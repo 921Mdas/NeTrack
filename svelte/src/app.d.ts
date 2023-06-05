@@ -2,32 +2,38 @@
 // for information about these interfaces
 // and what to do when importing types
 declare namespace App {
-	interface NetCase {
+	interface NetType {
+		Arr: number;
+		Budget: boolean;
+		Category: 'Feeling Lucky' | 'Medium' | 'Hot';
+		DM: boolean;
+		Notes: string;
+		Prospected: boolean;
+		Timeline: boolean;
+		Value: boolean;
 		clientName: string;
 		Rep: string;
-		Value: boolean;
-		Budget: boolean;
-		Timeline: boolean;
-		DM: boolean;
-		ARR: number;
-		Notes: string;
-		QC: number;
-		Category: 'Feeling Lucky' | 'Medium' | 'Hot';
-		isProspected: boolean;
+		qcPoints: number;
+		repName?: RepType;
 	}
 
-	interface NetStoreType {
-		allNetCases: NetCase[] | null;
-		allHotCases: NetCase[] | null;
-		allMediumCases: NetCase[] | null;
-		allFeelingLuckies: NetCase[] | null;
-		reps: Rep[] | null;
-	}
-
-	interface Rep {
+	interface RepType {
 		name: string;
 		office: string;
-		cases: NetCase[];
+		cases: NetType[];
 		_id: string;
+	}
+
+	interface DataSetsType {
+		label: string;
+		data: number[];
+		backgroundColor: string[];
+		borderWidth: number;
+		borderColor: string[];
+	}
+
+	interface GraphDataType {
+		labels: string[];
+		datasets: DataSetsType[];
 	}
 }

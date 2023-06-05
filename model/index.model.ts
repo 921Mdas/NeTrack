@@ -2,11 +2,8 @@ import mongoose, { Schema } from "mongoose";
 
 const netCaseSchema = new Schema(
   {
-    clientName: {
-      type: String,
-      require: true,
-    },
-    repName: { type: Schema.Types.ObjectId, ref: "rep", require: true },
+    clientName: { type: String, required: true },
+    repName: { type: Schema.Types.ObjectId, ref: "rep", required: true },
     Arr: { type: Number, default: 0 },
     Notes: { type: String, maxlength: 100 },
     Value: { type: Boolean, default: false },
