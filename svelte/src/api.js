@@ -1,5 +1,5 @@
 /** @type {import('./$types').PageLoad} */
-import { updateNetStore } from './store';
+import { updateNetStore, updateGraphStore } from './store';
 export const load = async () => {
     try {
         const response = await fetch('http://localhost:3000/net');
@@ -7,7 +7,7 @@ export const load = async () => {
         return netOptions;
     }
     catch (error) {
-        console.log('something went wrong');
+        console.log('something went wrong 🛑');
         console.log(error);
     }
     return null;
@@ -19,29 +19,41 @@ export const getReps = async () => {
         return data;
     }
     catch (error) {
-        console.log('something went wrong');
+        console.log('something went wrong 🛑');
         console.log(error);
     }
 };
 export const addNetCasesToStore = async (input) => {
-    console.log('the hell', input);
-    await fetch('http://localhost:3000/net', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            input
-        })
-    });
-    updateNetStore();
+    try {
+        await fetch('http://localhost:3000/net', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                input
+            })
+        });
+        updateNetStore();
+    }
+    catch (error) {
+        console.log('something went wrong 🛑');
+        console.log(error);
+    }
 };
 export const deleteNetCase = async (id) => {
-    await fetch(`http://localhost:3000/deletenet/${id}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-    updateNetStore();
+    try {
+        await fetch(`http://localhost:3000/deletenet/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        updateNetStore();
+        updateGraphStore();
+    }
+    catch (error) {
+        console.log('something went wrong 🛑');
+        console.log(error);
+    }
 };

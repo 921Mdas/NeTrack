@@ -8,22 +8,34 @@ export const graphStore = writable({
 });
 // store functions
 export const updateNetStore = async () => {
-    const netData = await load();
-    if (netData !== null) {
-        netStore.update((store) => {
-            store = netData;
-            return store;
-        });
+    try {
+        const netData = await load();
+        if (netData !== null) {
+            netStore.update((store) => {
+                store = netData;
+                return store;
+            });
+        }
+    }
+    catch (error) {
+        console.log('something went wrong, couldnt update Net🛑');
+        console.log(error);
     }
 };
 export const updateRepStore = async () => {
-    const repsData = await getReps();
-    if (repsData !== null) {
-        const { reps } = repsData;
-        repStore.update((store) => {
-            store = reps;
-            return store;
-        });
+    try {
+        const repsData = await getReps();
+        if (repsData !== null) {
+            const { reps } = repsData;
+            repStore.update((store) => {
+                store = reps;
+                return store;
+            });
+        }
+    }
+    catch (error) {
+        console.log('something went wrong 🛑');
+        console.log(error);
     }
 };
 export const updateGraphStore = async () => {
@@ -60,6 +72,7 @@ export const updateGraphStore = async () => {
         });
     }
     catch (error) {
+        console.log('something is wrong with the graph data🛑');
         console.log(error);
     }
 };

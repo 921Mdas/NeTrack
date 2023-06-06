@@ -1,5 +1,5 @@
 /** @type {import('./$types').PageLoad} */
-import { updateNetStore } from './store';
+import { updateNetStore, updateGraphStore } from './store';
 
 export const load = async () => {
 	try {
@@ -7,7 +7,7 @@ export const load = async () => {
 		const { netOptions }: { netOptions: App.NetType[] } = await response.json();
 		return netOptions;
 	} catch (error) {
-		console.log('something went wrong');
+		console.log('something went wrong 🛑');
 		console.log(error);
 	}
 
@@ -20,33 +20,43 @@ export const getReps = async () => {
 		const data = await response.json();
 		return data;
 	} catch (error) {
-		console.log('something went wrong');
+		console.log('something went wrong 🛑');
 		console.log(error);
 	}
 };
 
 export const addNetCasesToStore = async (input: App.NetType) => {
-	console.log('the hell', input);
-	await fetch('http://localhost:3000/net', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			input
-		})
-	});
+	try {
+		await fetch('http://localhost:3000/net', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				input
+			})
+		});
 
-	updateNetStore();
+		updateNetStore();
+	} catch (error) {
+		console.log('something went wrong 🛑');
+		console.log(error);
+	}
 };
 
 export const deleteNetCase = async (id: string) => {
-	await fetch(`http://localhost:3000/deletenet/${id}`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	});
+	try {
+		await fetch(`http://localhost:3000/deletenet/${id}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
 
-	updateNetStore();
+		updateNetStore();
+		updateGraphStore();
+	} catch (error) {
+		console.log('something went wrong 🛑');
+		console.log(error);
+	}
 };

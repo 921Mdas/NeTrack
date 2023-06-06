@@ -158,7 +158,7 @@
     </label>
   
 
-    <button type="button" class="btn rounded-sm variant-filled-primary" 
+    <button type="button" class="btn rounded-sm bg-blue-700" 
     on:click={handleSubmit
     
     }

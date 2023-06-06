@@ -1,4 +1,4 @@
-import { writable, get } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { load, getReps } from './api';
 
 export const netStore = writable<App.NetType[]>([]);
@@ -12,23 +12,33 @@ export const graphStore = writable<App.GraphDataType>({
 
 // store functions
 export const updateNetStore = async () => {
-	const netData = await load();
-	if (netData !== null) {
-		netStore.update((store) => {
-			store = netData;
-			return store;
-		});
+	try {
+		const netData = await load();
+		if (netData !== null) {
+			netStore.update((store) => {
+				store = netData;
+				return store;
+			});
+		}
+	} catch (error) {
+		console.log('something went wrong, couldnt update Net🛑');
+		console.log(error);
 	}
 };
 
 export const updateRepStore = async () => {
-	const repsData = await getReps();
-	if (repsData !== null) {
-		const { reps }: { reps: App.RepType[] } = repsData;
-		repStore.update((store) => {
-			store = reps;
-			return store;
-		});
+	try {
+		const repsData = await getReps();
+		if (repsData !== null) {
+			const { reps }: { reps: App.RepType[] } = repsData;
+			repStore.update((store) => {
+				store = reps;
+				return store;
+			});
+		}
+	} catch (error) {
+		console.log('something went wrong 🛑');
+		console.log(error);
 	}
 };
 
@@ -65,6 +75,7 @@ export const updateGraphStore = async () => {
 			return store;
 		});
 	} catch (error) {
+		console.log('something is wrong with the graph data🛑');
 		console.log(error);
 	}
 };
