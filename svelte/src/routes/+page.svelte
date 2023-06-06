@@ -27,33 +27,62 @@ onMount( () => {
 	</div>
     <div class="test p-2 bg-slate-800 rounded-md">
       <h3 class="p2 font-bold">Hot 🔥</h3>
-      {#if $netStore}
-        {#each $netStore as net }
-          {#if net.Category === caseStatus.Hot}
-            <Case {net} />
-          {/if} 
-        {/each}
-      {/if}
+            {#if $netStore.length > 0}
+          {#if $netStore.some(net => net.Category === caseStatus.Hot)}
+            {#each $netStore as net}
+              {#if net.Category === caseStatus.Hot}
+                <Case {net} />
+              {/if}
+            {/each}
+          {:else}
+                       <h5 class="rounded-md p-3 text-center my-10">🔎 No cases 👀</h5>
+
+          {/if}
+        {:else}
+                     <h5 class="rounded-md p-3 text-center my-10">🔎 No cases 👀</h5>
+
+        {/if}
+
     </div>
     <div class="test p-2 bg-slate-800 rounded-md">
       <h3 class="p2 font-bold">Medium ☕️</h3>
-       {#if $netStore}
-        {#each $netStore as net }
+          {#if $netStore.length > 0}
+      {#if $netStore.some(net => net.Category === caseStatus.Medium)}
+        {#each $netStore as net}
           {#if net.Category === caseStatus.Medium}
-            <Case {net}  />
-          {/if} 
+            <Case {net} />
+          {/if}
         {/each}
+      {:else}
+           <h5 class="rounded-md p-3 text-center my-10">🔎 No cases 👀</h5>
+
       {/if}
+    {:else}
+          <h5 class="rounded-md p-3 text-center my-10">🔎 No cases 👀</h5>
+
+
+    {/if}
+
     </div>
     <div class="test p-2 bg-slate-800 rounded-md">
       <h3 class="p2 font-bold">Feeling Lucky 🤞</h3>
-       {#if $netStore}
-        {#each $netStore as net }
-          {#if net.Category === caseStatus.Lucky}
-            <Case {net}  /> 
-          {/if} 
-        {/each}
+      {#if $netStore.length > 0}
+  {#if $netStore.some(net => net.Category === caseStatus.Lucky)}
+    {#each $netStore as net}
+      {#if net.Category === caseStatus.Lucky}
+        <Case {net} />
       {/if}
+    {/each}
+  {:else}
+              <h5 class="rounded-md p-3 text-center my-10">🔎 No cases 👀</h5>
+
+  {/if}
+{:else}
+               <h5 class="rounded-md p-3 text-center my-10">🔎 No cases 👀</h5>
+
+
+{/if}
+
     </div>
   </div>
 </div>
