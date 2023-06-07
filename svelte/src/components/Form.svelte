@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import {  addNetCasesToStore, getReps } from '../api';
-  import { repStore, updateRepStore, updateGraphStore, graphStore } from '../store';
+  import {  addNetCasesToStore, addEditedNetCaseToStore} from '../api';
+  import { repStore, updateRepStore, updateGraphStore,isEditing, formStore } from '../store';
   import {Counter, calcQualifyingStage} from "../util/helper";
 
    
@@ -39,7 +39,13 @@
 	};
   
 
-  
+  $:{
+    if($isEditing){
+      formData = $formStore
+
+    }
+  }
+
 
 
   onMount(async () => {
@@ -49,7 +55,13 @@
   const handleSubmit = async () => {
         try {
         formData.Category = await calcQualifyingStage(formData.qcPoints);
-        await addNetCasesToStore(formData);
+        if($isEditing){
+          addEditedNetCaseToStore(formData)
+        }
+
+        if(!$isEditing){
+          await addNetCasesToStore(formData);
+        }
         await updateGraphStore()
         resetForm()
       } catch (error) {
@@ -57,6 +69,15 @@
         console.log(error);
       }
     };
+
+  const cancelEditing = ()=>{
+    isEditing.update((prev)=>{
+      prev = false;
+      return prev
+    })
+
+    resetForm()
+  }
 
 
 </script>
@@ -157,12 +178,26 @@
 
     </label>
   
-
-    <button type="button" class="btn rounded-sm bg-blue-700" 
+   
+  <button type="button" class="btn rounded-sm bg-blue-700" 
     on:click={handleSubmit
-    
     }
-    >Submit</button>
+    >
+
+  {#if $isEditing}
+   Edit
+   {:else}
+   Submit
+  {/if}
+  </button>
+  
+   {#if $isEditing}
+   <button on:click={cancelEditing} type="button" class="bg-slate-400 p-2">
+     Cancel
+   </button>
+   {/if}
+
+  
 				  
     
 </div>

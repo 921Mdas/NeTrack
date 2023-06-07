@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import {deleteNetCase} from "../api";
+  import {deleteNetCase, editNet} from "../api";
   export let net: App.NetType;
 
 
@@ -40,8 +40,7 @@
               }}>d</button>
             <button
               class="rounded-sm bg-blue-500 w-5 h-6 flex justify-center items-center p-0"
-              on:click={() => {
-              }}>e</button>
+              on:click={()=>editNet(net?._id)}>e</button>
           </div>
         </td>
       </tr>
