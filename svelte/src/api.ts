@@ -1,5 +1,5 @@
 /** @type {import('./$types').PageLoad} */
-import { updateNetStore, updateGraphStore } from './store';
+import { updateNetStore, updateGraphStore, findNetCaseToEdit, isEditing } from './store';
 
 export const load = async () => {
 	try {
@@ -55,6 +55,43 @@ export const deleteNetCase = async (id: string) => {
 
 		updateNetStore();
 		updateGraphStore();
+		isEditing.update((prev) => {
+			prev = false;
+			return prev;
+		});
+	} catch (error) {
+		console.log('something went wrong 🛑');
+		console.log(error);
+	}
+};
+
+export const editNet = async (id: string) => {
+	isEditing.update((bool) => {
+		bool = true;
+		return bool;
+	});
+	// received the new version data and use the id to send both to backend
+	findNetCaseToEdit(id);
+};
+
+export const addEditedNetCaseToStore = async (formData: App.NetType) => {
+	try {
+		await fetch(`http://localhost:3000/editnet/${formData._id}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				formData
+			})
+		});
+
+		updateNetStore();
+		updateGraphStore();
+		isEditing.update((bool) => {
+			bool = false;
+			return bool;
+		});
 	} catch (error) {
 		console.log('something went wrong 🛑');
 		console.log(error);

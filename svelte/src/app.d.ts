@@ -15,6 +15,7 @@ declare namespace App {
 		Rep: string;
 		qcPoints: number;
 		repName?: RepType;
+		_id?: string;
 	}
 
 	interface RepType {

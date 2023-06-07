@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import { load, getReps } from './api';
 
 export const netStore = writable<App.NetType[]>([]);
@@ -8,6 +8,22 @@ export const repStore = writable<App.RepType[]>([]);
 export const graphStore = writable<App.GraphDataType>({
 	labels: [],
 	datasets: []
+});
+
+export const isEditing = writable<boolean>(false);
+
+export const formStore = writable<App.NetType>({
+	Arr: 0,
+	DM: false,
+	Value: false,
+	Budget: false,
+	Timeline: false,
+	Prospected: false,
+	Category: 'Feeling Lucky',
+	Notes: '',
+	clientName: '',
+	Rep: '',
+	qcPoints: 0
 });
 
 // store functions
@@ -78,4 +94,15 @@ export const updateGraphStore = async () => {
 		console.log('something is wrong with the graph data🛑');
 		console.log(error);
 	}
+};
+
+export const findNetCaseToEdit = async (id: string) => {
+	const netData = get(netStore);
+	const [netCaseToEdit] = netData.filter((net) => net._id === id);
+
+	// populate the new editing form
+	formStore.update((form) => {
+		form = netCaseToEdit;
+		return form;
+	});
 };

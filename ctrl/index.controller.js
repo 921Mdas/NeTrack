@@ -55,8 +55,18 @@ const getAllReps = async (_req, res) => {
 const deleteNet = async (req, res) => {
     try {
         const id = req.params.id;
+        const netCaseFound = await netModel.findById(id);
+        const { repName } = await netCaseFound;
+        const findRepAndDeleteCase = await repModel.findById(repName);
+        const casesArr = findRepAndDeleteCase === null || findRepAndDeleteCase === void 0 ? void 0 : findRepAndDeleteCase.cases;
+        for (let i = (casesArr === null || casesArr === void 0 ? void 0 : casesArr.length) - 1; i >= 0; i--) {
+            console.log(casesArr[i].toString() === id);
+            if (casesArr[i].toString() === id) {
+                casesArr === null || casesArr === void 0 ? void 0 : casesArr.splice(i, 1);
+            }
+        }
         const deletedNet = await netModel.deleteOne({ _id: id });
-        console.log("todelete", deletedNet);
+        console.log("todelete", findRepAndDeleteCase);
         return res
             .status(StatusCodes.OK)
             .json({ "💥 successfully deleted": deletedNet });
@@ -78,4 +88,38 @@ const getAllNetOps = async (_req, res) => {
         return res.status(StatusCodes.NOT_FOUND).send("couldn't find any net op");
     }
 };
-export default { getAllNetOps, createNetOp, createRep, getAllReps, deleteNet };
+const editNet = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { formData: { clientName, repName, Arr, Notes, Value, Budget, Timeline, DM, Category, qcPoints, Prospected, }, } = await req.body;
+        const findAndUpdate = await netModel.findByIdAndUpdate(id, {
+            clientName,
+            repName: repName._id,
+            Arr,
+            Notes,
+            Value,
+            Budget,
+            Timeline,
+            DM,
+            Category,
+            qcPoints,
+            Prospected,
+        });
+        console.log(findAndUpdate);
+        return res.status(StatusCodes.OK).send(`successfully updated `);
+    }
+    catch (error) {
+        console.log(error);
+        return res
+            .status(StatusCodes.NOT_FOUND)
+            .send("🛑 couldn't update, not found");
+    }
+};
+export default {
+    getAllNetOps,
+    createNetOp,
+    createRep,
+    getAllReps,
+    deleteNet,
+    editNet,
+};
