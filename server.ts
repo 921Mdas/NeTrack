@@ -30,7 +30,7 @@ app.use(express.static(path.resolve(__dirname, "svelte", "build")));
 app.use("/", mainRouter);
 
 app.get("*", function (_req, res) {
-  res.sendFile(path.resolve(__dirname, "svelte", "build", "app.html"));
+  res.sendFile(path.resolve(__dirname, "svelte", "build", "index.html"));
 });
 
 app.listen(port, () => {
