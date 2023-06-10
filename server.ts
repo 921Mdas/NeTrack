@@ -6,9 +6,10 @@ import { config } from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { handler } from "./svelte/build/handler.js";
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const port = 3000;
@@ -25,13 +26,13 @@ app.use(
   })
 );
 
-// app.use(express.static(path.resolve(__dirname, "svelte", "build")));
+app.use(express.static(path.resolve(__dirname, "svelte", "build")));
 
 app.use("/", mainRouter);
 
-// app.get("*", function (_req, res) {
-//   res.sendFile(path.resolve(__dirname, "svelte", "build", "index.html"));
-// });
+app.get("*", function (_req, res) {
+  res.sendFile(path.resolve(__dirname, "svelte", "build", "index.html"));
+});
 
 app.listen(port, () => {
   console.log("💥 server has started at port", port);
