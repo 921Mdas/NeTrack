@@ -15,7 +15,12 @@ import "./config.db.js"; // Import the config.db.js file
 app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
-    origin: ["http://localhost:5173", "https://ne-track.vercel.app"],
+    origin: [
+        "http://localhost:5173",
+        "https://ne-track.vercel.app",
+        "ne-track-ivx4wt711-921mdas.vercel.app",
+        "ne-track-git-main-921mdas.vercel.app",
+    ],
     methods: "GET,POST,PUT,DELETE",
 }));
 app.use(express.static(path.resolve(__dirname, "svelte", "build")));
