@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+import { onMount } from 'svelte';
   import {  addNetCasesToStore, addEditedNetCaseToStore} from '../api';
   import { repStore, updateRepStore, updateGraphStore,isEditing, formStore } from '../store';
   import {Counter, calcQualifyingStage} from "../util/helper";
@@ -76,6 +76,11 @@
       return prev
     })
 
+    resetForm()
+  }
+
+
+  const clearForm = ()=>{
     resetForm()
   }
 
@@ -193,6 +198,10 @@
   
    {#if $isEditing}
    <button on:click={cancelEditing} type="button" class="bg-slate-400 p-2">
+     Cancel
+   </button>
+   {:else}
+   <button on:click={clearForm} type="button" class="bg-slate-400 p-2">
      Cancel
    </button>
    {/if}

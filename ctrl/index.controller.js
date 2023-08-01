@@ -33,8 +33,8 @@ const createNetOp = async (req, res) => {
         console.log("new net op", newNetCase);
         const { clientName: client, repName, _id } = newNetCase;
         const rep = await repModel.findById(repName);
-        await (rep === null || rep === void 0 ? void 0 : rep.cases.push(_id));
-        rep === null || rep === void 0 ? void 0 : rep.save();
+        await rep?.cases.push(_id);
+        rep?.save();
         return res.status(StatusCodes.OK).send(`successfully added ${client}`);
     }
     catch (error) {
@@ -58,11 +58,11 @@ const deleteNet = async (req, res) => {
         const netCaseFound = await netModel.findById(id);
         const { repName } = await netCaseFound;
         const findRepAndDeleteCase = await repModel.findById(repName);
-        const casesArr = findRepAndDeleteCase === null || findRepAndDeleteCase === void 0 ? void 0 : findRepAndDeleteCase.cases;
-        for (let i = (casesArr === null || casesArr === void 0 ? void 0 : casesArr.length) - 1; i >= 0; i--) {
+        const casesArr = findRepAndDeleteCase?.cases;
+        for (let i = casesArr?.length - 1; i >= 0; i--) {
             console.log(casesArr[i].toString() === id);
             if (casesArr[i].toString() === id) {
-                casesArr === null || casesArr === void 0 ? void 0 : casesArr.splice(i, 1);
+                casesArr?.splice(i, 1);
             }
         }
         const deletedNet = await netModel.deleteOne({ _id: id });

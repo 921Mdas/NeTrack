@@ -30,6 +30,9 @@
   }
 
 
+ 
+
+
 
 
   Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
