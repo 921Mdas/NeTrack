@@ -43,4 +43,4 @@ app.listen(port, () => {
   console.log("💥 server has started at port", port);
 });
 
-module.exports = app;
+export default app;
