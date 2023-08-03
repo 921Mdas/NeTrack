@@ -33,4 +33,3 @@ app.get("*", function (_req, res) {
 app.listen(port, function () {
     console.log("💥 server has started at port", port);
 });
-exports["default"] = app;
