@@ -3,7 +3,9 @@ import ctrl from "../ctrl/index.controller.js";
 const mainRouter = Router();
 const { getAllNetOps, createNetOp, createRep, getAllReps, deleteNet, editNet } =
   ctrl;
-
+mainRouter.get("/", (_req, res) => {
+  res.send("welcome back");
+});
 mainRouter.get("/net", getAllNetOps);
 mainRouter.get("/rep", getAllReps);
 

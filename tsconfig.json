@@ -16,5 +16,6 @@
       "src/*": ["src/*"],
       "$lib/*": ["src/lib/*"]
     }
-  }
+  },
+  "include": ["./api/*.ts"]
 }
