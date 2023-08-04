@@ -25,6 +25,7 @@ app.use(
       "https://ne-track.vercel.app",
       "ne-track-ivx4wt711-921mdas.vercel.app",
       "ne-track-git-main-921mdas.vercel.app",
+      "https://csto.onrender.com/",
     ],
     methods: "GET,POST,PUT,DELETE",
   })
