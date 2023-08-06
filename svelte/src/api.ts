@@ -2,11 +2,11 @@
 import { updateNetStore, updateGraphStore, findNetCaseToEdit, isEditing } from './store';
 
 const devURL = 'http://localhost:3000/';
-// const devURL = 'https://csto.onrender.com/';
+const prodURL = 'https://csto.onrender.com/';
 
 export const load = async () => {
 	try {
-		const response = await fetch(`${devURL}net`);
+		const response = await fetch(`${prodURL}net`);
 
 		console.log('response for load', response);
 		const { netOptions }: { netOptions: App.NetType[] } = await response.json();
@@ -21,7 +21,7 @@ export const load = async () => {
 
 export const getReps = async () => {
 	try {
-		const response = await fetch(`${devURL}rep`);
+		const response = await fetch(`${prodURL}rep`);
 		const data = await response.json();
 		return data;
 	} catch (error) {
@@ -32,7 +32,7 @@ export const getReps = async () => {
 
 export const addNetCasesToStore = async (input: App.NetType) => {
 	try {
-		await fetch(`${devURL}net`, {
+		await fetch(`${prodURL}net`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ export const addNetCasesToStore = async (input: App.NetType) => {
 
 export const deleteNetCase = async (id: string) => {
 	try {
-		await fetch(`${devURL}deletenet/${id}`, {
+		await fetch(`${prodURL}deletenet/${id}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -81,7 +81,7 @@ export const editNet = async (id: string) => {
 
 export const addEditedNetCaseToStore = async (formData: App.NetType) => {
 	try {
-		await fetch(`${devURL}editnet/${formData._id}`, {
+		await fetch(`${prodURL}editnet/${formData._id}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

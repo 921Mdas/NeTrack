@@ -12,6 +12,8 @@ export const graphStore = writable<App.GraphDataType>({
 
 export const isEditing = writable<boolean>(false);
 
+export const isLoading = writable<boolean>(true);
+
 export const formStore = writable<App.NetType>({
 	Arr: 0,
 	DM: false,

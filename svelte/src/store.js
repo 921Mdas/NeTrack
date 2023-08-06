@@ -7,6 +7,7 @@ export const graphStore = writable({
     datasets: []
 });
 export const isEditing = writable(false);
+export const isLoading = writable(true);
 export const formStore = writable({
     Arr: 0,
     DM: false,
